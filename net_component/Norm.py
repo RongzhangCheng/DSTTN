@@ -10,7 +10,7 @@ class SNorm(nn.Module):
 
     def forward(self, x):
         x_norm = (x - x.mean(2, keepdims=True)) / (x.var(2, keepdims=True, unbiased=True) + 0.00001) ** 0.5
-        out = x_norm * self.gamma.view(1, -1, 1, 1) + self.beta.view(1, -1, 1, 1)
+        out = x_norm + self.gamma.view(1, -1, 1, 1) + self.beta.view(1, -1, 1, 1)
         return out
 
 
@@ -40,7 +40,7 @@ class TNorm(nn.Module):
             mean = x.mean((3), keepdims=True)
             var = x.var((3), keepdims=True, unbiased=True)
         x_norm = (x - mean) / (var + 0.00001) ** 0.5
-        out = x_norm * self.gamma + self.beta
+        out = x_norm + self.gamma + self.beta
         return out
 
 
