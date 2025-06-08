@@ -88,9 +88,9 @@ class TransformerEncoder(Module):
         ht = self.conv(ht)
         ht = ht.transpose(0, 1)[..., -1]
         ht = ht.transpose(1, 2)
-        A = torch.matmul(ht, ht.transpose(1, 2))[0]
+        AM = torch.matmul(ht, ht.transpose(1, 2))[0]
 
-        return output, A
+        return output, AM
 
 
 class TransformerDecoder(Module):
