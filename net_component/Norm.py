@@ -51,9 +51,15 @@ class STNorm(nn.Module):
         self.temporal_norm = TNorm(num_nodes=num_nodes, channels=hidden_units)
 
     def forward(self, x):
-        h = x.permute(1, 2, 0).unsqueeze(-1)
+        h = x.permute(1, 0, 2).unsqueeze(1)
         hs = self.spatial_norm(h)
-
         ht = self.temporal_norm(h)
+        
+        hs = hs.mean(dim=1, keepdim=True)
+        ht = ht.mean(dim=1, keepdim=True)
+
+        h = h.permute(0, 3, 2, 1)
+        hs = hs.permute(0, 3, 2, 1)
+        ht = ht.permute(0, 3, 2, 1)
 
         return h, hs, ht
